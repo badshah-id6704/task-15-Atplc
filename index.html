@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Array Operations</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .container::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            z-index: 0;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        h1 {
+            color: #1a2a6c;
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .subtitle {
+            color: #b21f1f;
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+        
+        .content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .operation-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            border: 1px solid #eaeaea;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .operation-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+        
+        .operation-card h2 {
+            color: #1a2a6c;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .operation-card h2 i {
+            margin-right: 10px;
+            color: #b21f1f;
+        }
+        
+        .array-display {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 12px;
+            margin: 15px 0;
+            font-family: monospace;
+            font-size: 1.1rem;
+            border-left: 4px solid #b21f1f;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background: linear-gradient(to right, #1a2a6c, #b21f1f);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            width: 100%;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(178, 31, 31, 0.3);
+        }
+        
+        .result-container {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background: #e8f4f8;
+            border-left: 4px solid #1a2a6c;
+            display: none;
+        }
+        
+        .result-title {
+            font-weight: 600;
+            color: #1a2a6c;
+            margin-bottom: 8px;
+        }
+        
+        .result-content {
+            font-family: monospace;
+            font-size: 1.1rem;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #555;
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .highlight {
+            background-color: #fff9c4;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>JavaScript Array Operations</h1>
+            <p class="subtitle">Demonstrating DOM Manipulation with Array Methods</p>
+        </header>
+        
+        <div class="content">
+            <!-- Sorting Operation -->
+            <div class="operation-card">
+                <h2><i>🔢</i> Sort an Array</h2>
+                <p>Sort the following array in ascending order:</p>
+                <div class="array-display" id="sortArray">[5, 2, 9, 1, 5, 6]</div>
+                <button class="btn" id="sortBtn">Sort Array</button>
+                <div class="result-container" id="sortResult">
+                    <div class="result-title">Sorted Array:</div>
+                    <div class="result-content" id="sortedArray"></div>
+                </div>
+            </div>
+            
+            <!-- Concatenation Operation -->
+            <div class="operation-card">
+                <h2><i>🧩</i> Concatenate Arrays</h2>
+                <p>Combine these two arrays:</p>
+                <div class="array-display">Array 1: [1, 2, 3]</div>
+                <div class="array-display">Array 2: [4, 5, 6]</div>
+                <button class="btn" id="concatBtn">Concatenate Arrays</button>
+                <div class="result-container" id="concatResult">
+                    <div class="result-title">Combined Array:</div>
+                    <div class="result-content" id="concatenatedArray"></div>
+                </div>
+            </div>
+            
+            <!-- Remove First Element -->
+            <div class="operation-card">
+                <h2><i>✂️</i> Remove First Element</h2>
+                <p>Remove the first element from this array:</p>
+                <div class="array-display" id="removeArray">["Red", "Green", "Blue", "Yellow"]</div>
+                <button class="btn" id="removeBtn">Remove First Element</button>
+                <div class="result-container" id="removeResult">
+                    <div class="result-title">Modified Array:</div>
+                    <div class="result-content" id="modifiedArray"></div>
+                    <div class="result-title" style="margin-top: 10px;">Removed Element:</div>
+                    <div class="result-content" id="removedElement"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>This page demonstrates DOM manipulation using <span class="highlight">JavaScript array operations</span>.</p>
+            <p>Click the buttons to see each operation in action!</p>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const sortBtn = document.getElementById('sortBtn');
+        const concatBtn = document.getElementById('concatBtn');
+        const removeBtn = document.getElementById('removeBtn');
+        
+        const sortResult = document.getElementById('sortResult');
+        const concatResult = document.getElementById('concatResult');
+        const removeResult = document.getElementById('removeResult');
+        
+        // Arrays
+        const sortArray = [5, 2, 9, 1, 5, 6];
+        const array1 = [1, 2, 3];
+        const array2 = [4, 5, 6];
+        const removeArray = ["Red", "Green", "Blue", "Yellow"];
+        
+        // Event Listeners
+        sortBtn.addEventListener('click', () => {
+            const sorted = [...sortArray].sort((a, b) => a - b);
+            document.getElementById('sortedArray').textContent = JSON.stringify(sorted);
+            sortResult.style.display = 'block';
+        });
+        
+        concatBtn.addEventListener('click', () => {
+            const combined = [...array1, ...array2];
+            document.getElementById('concatenatedArray').textContent = JSON.stringify(combined);
+            concatResult.style.display = 'block';
+        });
+        
+        removeBtn.addEventListener('click', () => {
+            const removed = removeArray[0];
+            const modified = removeArray.slice(1);
+            document.getElementById('modifiedArray').textContent = JSON.stringify(modified);
+            document.getElementById('removedElement').textContent = JSON.stringify(removed);
+            removeResult.style.display = 'block';
+        });
+    </script>
+</body>
+</html>
